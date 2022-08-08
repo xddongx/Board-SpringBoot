@@ -38,28 +38,38 @@ public class BoardService {
 
     public List<BoardDto> readBoardList() {
         List<BoardDto> boardDtoList = new ArrayList<>();
-        boardRepository.findAll().forEach(board -> boardDtoList.add(new BoardDto(board)));
+        boardRepository.findAll().stream().filter(board -> !board.isDelete()).forEach(board -> boardDtoList.add(new BoardDto(board)));
 
         return boardDtoList;
     }
 
     public BoardDto readBoardOne(Long postNo) {
-        Optional<Board> board = boardRepository.findById(postNo);
-        if (board.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Optional<Board> targetBoard = boardRepository.findById(postNo).filter(board -> !board.isDelete());
+        if (targetBoard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return new BoardDto(board.get());
+        return new BoardDto(targetBoard.get());
     }
 
     public BoardDto modifiedBoard(Long postNo, BoardDto boardDto) {
-        Optional<Board> boardOptional = boardRepository.findById(postNo);
+        Optional<Board> targetBoard = boardRepository.findById(postNo).filter(board -> !board.isDelete());
 
-        if(boardOptional.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if(targetBoard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        Board board = boardOptional.get();
+        Board board = targetBoard.get();
         board.setTitle(boardDto.getTitle());
         board.setContent(board.getContent());
 
         boardRepository.save(board);
         return new BoardDto(board);
+    }
+
+    public void deleteBoard(Long postNo) {
+        Optional<Board> targetBoard = boardRepository.findById(postNo).filter(board -> !board.isDelete());
+
+        if (targetBoard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        Board board = targetBoard.get();
+        board.setDelete(true);
+        boardRepository.save(board);
     }
 }

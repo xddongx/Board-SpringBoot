@@ -1,6 +1,5 @@
 package site.xddongx.boardspringboot.controller;
 
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +41,8 @@ public class BoardAPIController {
     }
 
     // DELETE
-
+    @PutMapping("delete/{postNo}")
+    public void deleteBoard(@PathVariable("postNo") Long postNo) {
+        this.boardService.deleteBoard(postNo);
+    }
 }
