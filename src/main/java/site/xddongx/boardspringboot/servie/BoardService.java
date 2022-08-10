@@ -56,8 +56,7 @@ public class BoardService {
         if(targetBoard.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         Board board = targetBoard.get();
-        board.setTitle(boardDto.getTitle());
-        board.setContent(board.getContent());
+        board.modifiedBoard(boardDto);
 
         boardRepository.save(board);
         return new BoardDto(board);
