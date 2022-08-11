@@ -2,17 +2,11 @@ package site.xddongx.boardspringboot.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.xddongx.boardspringboot.dto.BoardDto;
-import site.xddongx.boardspringboot.entity.Message;
-import site.xddongx.boardspringboot.entity.StatusEnum;
 import site.xddongx.boardspringboot.servie.BoardService;
 
-import java.nio.charset.Charset;
 import java.util.Collection;
 
 @RestController
