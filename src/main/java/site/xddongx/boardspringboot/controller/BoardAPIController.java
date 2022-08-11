@@ -33,30 +33,8 @@ public class BoardAPIController {
 
     // GET
     @GetMapping("{postNo}")
-    public ResponseEntity<Message> readBoardOne(@PathVariable("postNo") Long postNo) {
-        BoardDto boardDto = this.boardService.readBoardOne(postNo);
-
-        if (boardDto == null) {
-            Message message = new Message();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("fail");
-            message.setData(null);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
-
-        Message message = new Message();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("success");
-        message.setData(boardDto);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    public ResponseEntity<BoardDto> readBoardOne(@PathVariable("postNo") Long postNo) {
+        return ResponseEntity.ok(this.boardService.readBoardOne(postNo));
     }
 
     // POST
